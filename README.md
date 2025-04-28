@@ -1,2 +1,11 @@
 # RokuECP
 .NET Library for communicating with Roku devices over the external control protocol (ECP). Read more at https://developer.roku.com/docs/developer-program/dev-tools/external-control-api.md.
+
+An example of usage:
+```csharp
+IPAddress playerIpAddress = IPAddress.Parse("192.168.1.69");
+RokuPlayer player = new(playerIpAddress);
+
+Console.WriteLine("This device's serial number is {0}.", player.SerialNumber);
+// -> This device's serial number is YL003F587777.
+```
