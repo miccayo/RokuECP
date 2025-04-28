@@ -11,6 +11,7 @@ Console.WriteLine("This device's serial number is {0}.", player.SerialNumber);
 ```
 
 TODO:
+  - Keydown/keyup commands
   - Look into uploading developer channels
   - Add built-in "secret screen" shortcuts (single call rather than SendKeypresses(...))
   - Telnet control support
