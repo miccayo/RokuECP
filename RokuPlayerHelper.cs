@@ -87,5 +87,10 @@ namespace RokuECP
             };
         }
         #endregion
+
+        public RokuPlayerHelper()
+        {
+            _httpClient.Timeout = TimeSpan.FromMilliseconds(10000);
+        }
     }
 }

@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36015.10 d17.14
+VisualStudioVersion = 17.14.36015.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RokuECP", "RokuECP.csproj", "{3C586362-4D67-4CFE-804C-D4C8B38B44B6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RokuECPTests", "..\RokuECPTests\RokuECPTests.csproj", "{CE557746-F97C-44FB-B7A6-D2B268F0F746}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3C586362-4D67-4CFE-804C-D4C8B38B44B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3C586362-4D67-4CFE-804C-D4C8B38B44B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3C586362-4D67-4CFE-804C-D4C8B38B44B6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CE557746-F97C-44FB-B7A6-D2B268F0F746}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CE557746-F97C-44FB-B7A6-D2B268F0F746}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CE557746-F97C-44FB-B7A6-D2B268F0F746}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CE557746-F97C-44FB-B7A6-D2B268F0F746}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

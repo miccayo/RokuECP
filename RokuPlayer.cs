@@ -423,6 +423,11 @@ namespace RokuECP
         #endregion
 
         #region "Public Methods"
+        public void RefreshPlayerInfo()
+        {
+            Dictionary<string, string> playerInfo = GetPlayerInfo();
+            SetPlayerInfo(playerInfo);
+        }
         public void SendKeypress(KeypressType keypress)
         {
             Uri keypressUrl = GetPlayerUri(string.Format("/keypress/{0}", RokuPlayerHelper.KeypressToString(keypress)));
@@ -736,14 +741,14 @@ namespace RokuECP
         #endregion
 
         #region "Constructors"
-        RokuPlayer(IPAddress playerIp)
+        public RokuPlayer(IPAddress playerIp)
         {
             _IpAddress = playerIp;
             _BaseUrl = string.Format("http://{0}:{1}/", playerIp.ToString(), _Port);
             Dictionary<string, string> playerInfo = GetPlayerInfo();
             SetPlayerInfo(playerInfo);
         }
-        RokuPlayer(IPAddress playerIp, ushort playerPort)
+        public RokuPlayer(IPAddress playerIp, ushort playerPort)
         {
             _IpAddress = playerIp;
             _Port = playerPort;
