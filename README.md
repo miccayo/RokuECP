@@ -9,3 +9,8 @@ RokuPlayer player = new(playerIpAddress);
 Console.WriteLine("This device's serial number is {0}.", player.SerialNumber);
 // -> This device's serial number is YL003F587777.
 ```
+
+TODO:
+  - Look into uploading developer channels
+  - Add built-in "secret screen" shortcuts (single call rather than SendKeypresses(...))
+  - Telnet control support
