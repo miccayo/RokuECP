@@ -113,10 +113,27 @@ namespace RokuECP
         public string TrcChannelVersion { get; private set; } = string.Empty;
         public string AVSyncCalibrationEnabled { get; private set; } = string.Empty;
         public string BrightScriptDebuggerVersion { get; private set; } = string.Empty;
+        public List<RokuApp> InstalledApps { get; private set; } = [];
         #endregion
 
         #region "Private Properties"
         private readonly RokuPlayerHelper _Helper = new();
+
+        private readonly Dictionary<string, KeypressType[]> SecretScreens = new()
+        {
+            {"RokuTvReady", 
+             [KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home,
+              KeypressType.Up, KeypressType.Right, KeypressType.Up, KeypressType.Right, KeypressType.Up]},
+            {"SecretScreen",
+             [KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home,
+              KeypressType.Forward, KeypressType.Forward, KeypressType.Forward, KeypressType.Rewind, KeypressType.Rewind]},
+            {"SecretScreenTwo",
+             [KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home,
+              KeypressType.Up, KeypressType.Right, KeypressType.Down, KeypressType.Left, KeypressType.Up]},
+            {"WiFiSecretScreen",
+             [KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home, KeypressType.Home,
+              KeypressType.Up, KeypressType.Down, KeypressType.Up, KeypressType.Down, KeypressType.Up]}
+        };
 
         // Connection details
         private readonly IPAddress _IpAddress;
@@ -125,6 +142,7 @@ namespace RokuECP
         #endregion
 
         #region "Public Methods"
+        // Classic (:8060)
         public void RefreshPlayerInfo()
         {
             Dictionary<string, string> playerInfo = GetPlayerInfo();
@@ -170,6 +188,17 @@ namespace RokuECP
             Uri exitChannelUrl = GetPlayerUri("/exit-app");
             _Helper.PostContents(exitChannelUrl, string.Empty);
         }
+        public void OpenSecretScreen(string screenName)
+        {
+            SecretScreens.TryGetValue(screenName, out KeypressType[]? keypresses);
+            if (keypresses != null)
+            {
+                SendKeypress(KeypressType.Home);
+                Task.Delay(2000).Wait();
+                SendKeypressSequence(keypresses, 500);
+            }
+        }
+        // Telnet (:8080)
         #endregion
 
         #region "Private Methods"
@@ -201,6 +230,30 @@ namespace RokuECP
                 }
             }
             return playerInfo;
+        }
+        public void SetInstalledApps()
+        {
+            string installedAppsString = _Helper.GetContents(GetPlayerUri("/query/apps"));
+            installedAppsString = installedAppsString.Trim();
+            if (!string.IsNullOrEmpty(installedAppsString))
+            {
+                XDocument installedAppsDoc = RokuPlayerHelper.GetXDocument(installedAppsString);
+                foreach (XElement element in installedAppsDoc.Descendants())
+                {
+                    if (element.Name.ToString() == "apps") continue;
+                    // Validate fields exist
+                    long appId = -1;
+                    string appType = string.Empty;
+                    string appVersion = string.Empty;
+                    string appName = string.Empty;
+                    if (element.Attribute("id") != null) appId = Convert.ToInt64(element.Attribute("id")!.Value);
+                    if (element.Attribute("type") != null) appType = element.Attribute("type")!.Value;
+                    if (element.Attribute("version") != null) appVersion = element.Attribute("version")!.Value;
+                    if (element.Value != null) appName = element.Value;
+                    RokuApp app = new(appId, appType, appVersion, appName);
+                    InstalledApps.Add(app);
+                }
+            }
         }
         public void SetPlayerInfo(Dictionary<string, string> playerInfo)
         {
@@ -449,6 +502,7 @@ namespace RokuECP
             _BaseUrl = string.Format("http://{0}:{1}/", playerIp.ToString(), _Port);
             Dictionary<string, string> playerInfo = GetPlayerInfo();
             SetPlayerInfo(playerInfo);
+            SetInstalledApps();
         }
         public RokuPlayer(IPAddress playerIp, ushort playerPort)
         {
@@ -457,6 +511,7 @@ namespace RokuECP
             _BaseUrl = string.Format("http://{0}:{1}/", playerIp.ToString(), _Port);
             Dictionary<string, string> playerInfo = GetPlayerInfo();
             SetPlayerInfo(playerInfo);
+            SetInstalledApps();
         }
         #endregion
     }
