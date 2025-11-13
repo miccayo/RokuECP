@@ -15,3 +15,6 @@ TODO:
   - Look into uploading developer channels
   - Add built-in "secret screen" shortcuts (single call rather than SendKeypresses(...))
   - Telnet control support
+
+Known issues:
+  - Some secret screen shortcuts cannot be reached using ECP. Needs further research, but Telnet control may be able to do so.
