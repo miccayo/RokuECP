@@ -21,6 +21,7 @@ To Do:
   - Research automation of developer channel uploads
   - Add built-in "secret screen" shortcuts
   - Telnet player control
+  - Support for player clusters: send a command or sequence of commands to more than one device to automate testing multiple player models
 
 Known issues:
   - Some secret screen shortcuts cannot be reached using ECP. Needs further research, but Telnet control may be able to do so.
